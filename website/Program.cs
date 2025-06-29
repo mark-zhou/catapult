@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+
 namespace website
 {
     public class Program
@@ -20,7 +22,9 @@ namespace website
 
             app.UseAuthorization();
 
-            app.MapStaticAssets();
+			StaticWebAssetsLoader.UseStaticWebAssets(configuration: builder.Configuration, environment: app.Environment);
+
+			app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
