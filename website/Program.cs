@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using website.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace website
 {
@@ -10,21 +13,34 @@ namespace website
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<Users.UserStore>();
+
+			// Add cookie authentication
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Admin/Login";
+                    options.LogoutPath = "/Admin/Logout";
+                    options.AccessDeniedPath = "/Admin/AccessDenied";
+                });
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Admin/Error");
             }
+
             app.UseRouting();
 
+            // Enable authentication and authorization middleware
+            app.UseAuthentication();
             app.UseAuthorization();
 
-			StaticWebAssetsLoader.UseStaticWebAssets(configuration: builder.Configuration, environment: app.Environment);
+            StaticWebAssetsLoader.UseStaticWebAssets(configuration: builder.Configuration, environment: app.Environment);
 
-			app.MapStaticAssets();
+            app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")

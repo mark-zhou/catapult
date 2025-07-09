@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Site Admin";
+}
+
+<style>
+    a {
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div>
+    <h3>Site Admin</h3>
+    <form asp-action="Logout" method="post">
+        <p style="text-align: end;">
+            Hello, @User.Identities.First().Name
+            &nbsp;
+            <button type="submit" class="btn btn-outline-secondary" style="font-size: 0.8em;vertical-align:baseline;">Log Out</button>
+        </p>
+    </form>
+
+    <ul class="list-unstyled">
+
+        @* Managing user accounts *@
+        <li>
+            <a href="/admin/TODO">
+                <img src="/img/user.png" class="btn-icon" />View user accounts
+            </a>
+        </li>
+        <li>
+            <a asp-action="create-user">
+                <img src="/img/plus.png" class="btn-icon" />Create new user
+            </a>
+        </li>
+        <li>&nbsp;</li>
+
+        @* Managing web site content sources *@
+        <li>
+            <a href="/admin/TODO">
+                <img src="/img/drive.png" class="btn-icon" />View source drives
+            </a>
+        </li>
+        <li>
+            <a href="/admin/TODO">
+                <img src="/img/plus.png" class="btn-icon" />Add source drive
+            </a>
+        </li>
+        <li>&nbsp;</li>
+
+        @* Site stats *@
+        <li>
+            <a href="/admin/TODO">
+                <img src="/img/transactions.png" class="btn-icon" />Recent transactions
+            </a>
+        </li>
+        <li>
+            <a href="/admin/TODO">
+                <img src="/img/chart.png" class="btn-icon" />Daily active users and daily page views trends
+            </a>
+        </li>
+    </ul>
+</div>
